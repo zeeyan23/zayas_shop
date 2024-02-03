@@ -14,7 +14,7 @@ function MyCart() {
   const [mode, setMode] = useState('Basic');
 
   useEffect(() => {
-    if(user){
+    // if(user){
       async function getAllCartItems() {
         try {
           const response = await axios.get(`${mainURL}/zayas_shop/savetocart/`);
@@ -26,7 +26,7 @@ function MyCart() {
       }
   
       getAllCartItems();
-    }
+    // }
     
   }, [user]);
 
@@ -89,7 +89,7 @@ function MyCart() {
     <>
       <Box bg="white" safeArea flex={1}>
         <SwipeListView
-          data={cartItems}
+          data={cartItems.reverse()}
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           rightOpenValue={-130}
