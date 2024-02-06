@@ -15,6 +15,7 @@ import { Provider, useSelector } from 'react-redux';
 // import store from './src/redux/store';
 import { UserProvider } from './src/Context/CartContext';
 import initializeStore from './src/redux/store';
+import AllFavorites from './components/AllFavorites';
 
 function HomeScreen({ navigation }) {
   return (
@@ -80,9 +81,7 @@ function Profile() {
 
 function Notifications() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Notifications!</Text>
-    </View>
+    <AllFavorites />
   );
 }
 

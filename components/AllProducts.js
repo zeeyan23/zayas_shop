@@ -19,7 +19,7 @@ function AllProducts(){
         async function getOfferItems(){
             try {
                 await axios.get(`${mainURL}/zayas_shop/offersItems/`).then((response)=>{
-                    console.log(JSON.stringify(response.data, null, 2));
+                    // console.log(JSON.stringify(response.data, null, 2));
                     setOffersItems(response.data)
                 });
 
