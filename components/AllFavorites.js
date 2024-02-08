@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Box, Icon, Pressable, Radio, Text, View } from "native-base";
+import { Box, Center, HStack, Icon, Pressable, Radio, Text, VStack, View } from "native-base";
 import { useEffect, useState } from "react";
 import { mainURL } from "../utils/Urls";
 import { Animated, BackHandler, ScrollView } from "react-native";
@@ -56,7 +56,7 @@ function AllFavorites(){
             duration: 300,
             useNativeDriver: false,
         }).start(()=>{
-            // setShowRadioButton(true);
+            setShowRadioButton(true);
         });
     }
 
@@ -66,37 +66,45 @@ function AllFavorites(){
           duration: 300,
           useNativeDriver: false,
         }).start(() => {
-        //   setShowRadioButton(false);
+          setShowRadioButton(false);
         });
     };
 
     const translateX = animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 20],
+        outputRange: [0, 70],
     });
 
       
     return(
         <>
-            <Box paddingLeft={7}>
+            <VStack background={"white"} space={4} h={"full"} padding={5}>
                 <ScrollView>
-                {allFavorites.map((favorites, index)=>(
-                    <Animated.View style={{ transform: [{ translateX }], flexDirection:'row' }} key={index}>
-                        <Pressable onLongPress={buttonLongPressHandler} rounded="md" >
-                            <FavoriteItem favoriteItem={favorites.product_id} key={index}/>
-                        </Pressable>
-                            {showRadioButton && 
-                                <Radio.Group position={"absolute"} left={0} padding={7}>
-                                    <Radio colorScheme="red" value="2"  aria-label="close" size={"sm"}
-                                        icon={<Icon as={<MaterialCommunityIcons name="close" />} />}>
-                                        
-                                    </Radio>
-                                </Radio.Group>
-                            }
+                    {allFavorites.map((favorites, index)=>(
+                    <Animated.View style={{ transform: [{ translateX }] }} key={index}>
+                        <Center w="full" marginBottom={10} padding={5} bg="primary.700" rounded="md" shadow={3} >
+                            <Pressable onLongPress={buttonLongPressHandler} >
+                                <FavoriteItem favoriteItem={favorites.product_id} key={index}/>
+                            </Pressable>
+                        </Center>
+                        {showRadioButton && <HStack space={3} alignSelf={"flex-start"} position={"absolute"} h={"full"}>
+                            <Center w={"0.5"} right={"35"} rounded="md" h={"10"} alignSelf={"center"} >
+                                    {/* <Radio.Group>
+                                        <Radio colorScheme="red" value="2"  aria-label="close" size={"sm"}
+                                            icon={<Icon as={<MaterialCommunityIcons name="close" />} />} />
+                                    </Radio.Group> */}
+                                    <Radio.Group>
+                                        <Radio colorScheme="red" value="2" aria-label="close" size="sm">
+                                            <Icon as={MaterialCommunityIcons} name="" />
+                                        </Radio>
+                                    </Radio.Group>
+
+                            </Center>
+                        </HStack>}
                     </Animated.View>
-                ))}
+                    ))}
                 </ScrollView>
-            </Box>
+            </VStack>
         </>
     )
 }
