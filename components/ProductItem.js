@@ -61,7 +61,6 @@ function ProductItem({product}){
     }
 
     async function favoritePressHandler(product_id){
-        console.log(product_id)
         const formData={
             product_id: product_id
         }

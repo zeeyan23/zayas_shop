@@ -19,7 +19,6 @@ const configureStoreWithInitialCount = async () => {
       },
     });
   } catch (error) {
-    console.error('Error fetching initial count:', error);
     // If the request fails, return a store with default initial state
     return configureStore({
       reducer: {

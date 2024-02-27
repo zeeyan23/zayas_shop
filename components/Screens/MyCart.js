@@ -36,9 +36,7 @@ function MyCart(){
       key: `${i}`,
       data: [item]
     })));
-    
 
-    // console.log(JSON.stringify(listData, null, 2))
   
     const closeRow = (rowMap, rowKey) => {
       if (rowMap[rowKey]) {
@@ -52,7 +50,6 @@ function MyCart(){
       const prevIndex = listData.findIndex(item => item.key === rowKey);
       newData.splice(prevIndex, 1);
       setListData(newData);
-      console.log(data.data[0].id);
 
       try {
         await axios.delete(`${mainURL}/zayas_shop/deletecartitem/${data.data[0].id}/`).then((response)=>{

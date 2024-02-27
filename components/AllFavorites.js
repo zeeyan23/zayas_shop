@@ -125,17 +125,15 @@ function AllFavorites(){
   
 
     async function deleteHandler(){
-      console.log(checked)
       const dataToSend = Object.keys(checked)
                         .filter(id => checked[id])
                         .map(id => ({
                             item_id: parseInt(id),
                             product_id: allFavorites.find(item => item.id === parseInt(id)).product_id.id
                         }));
-      console.log(dataToSend)
       try {
           const response = await axios.post(`${mainURL}/zayas_shop/deletefavoriteitems/`, 
-              { items: dataToSend }, // Send data as an array of objects with item_id and product_id keys
+              { items: dataToSend },
               {
                   headers: {
                       'Content-Type': 'application/json',
@@ -143,8 +141,12 @@ function AllFavorites(){
               }
           );
           Toast.show({
-              description: "Successfully removed favorites!"
+            description: "Successfully removed favorites!"
           });
+          const updatedFavorites = allFavorites.filter(item => !checked[item.id]);
+          setAllFavorites(updatedFavorites);
+          
+          resetAnimation();
       } catch (error) {
           console.log(error)
       }
