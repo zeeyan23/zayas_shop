@@ -67,6 +67,18 @@ function AllProducts(){
         getAllCategories();
     },[]);
 
+    async function filterHandler(category_id){
+        try {
+            await axios.get(`${mainURL}/zayas_shop/fetchItem/${category_id}`).then((response)=>{
+                setAllProducts(response.data)
+            });
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     const renderItem = data => (
         <View
             key={data.coverImageUri}
@@ -107,7 +119,7 @@ function AllProducts(){
                     <ScrollView horizontal={true}>
                         <HStack space={4} justifyContent='center' padding={5}>
                             {allCategories.map((data, key)=>(
-                                <ChipButton key={key}>{data.category_name}</ChipButton>
+                                <ChipButton key={key} onPress={()=>filterHandler(data.id)}>{data.category_name}</ChipButton>
                             ))}
                         </HStack>
                     </ScrollView>

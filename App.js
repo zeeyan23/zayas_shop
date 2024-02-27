@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import { useState, useEffect } from "react";
-import { View, Text } from 'react-native';
+import { View, Text, StatusBar, Image } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { IconButton, NativeBaseProvider, VStack ,Button} from 'native-base';
@@ -13,6 +13,7 @@ import AllProducts from './components/AllProducts';
 import Badge from './utils/Badge';
 import { Provider, useSelector } from 'react-redux';
 // import store from './src/redux/store';
+import { Ionicons } from "@expo/vector-icons";
 import { UserProvider } from './src/Context/CartContext';
 import initializeStore from './src/redux/store';
 import AllFavorites from './components/AllFavorites';
@@ -147,15 +148,36 @@ export default function App() {
     return null;
   }
 
+  function CustomDrawerContent(props) {
+    const { navigation } = props;
+    return (
+      <DrawerContentScrollView {...props}>
+        <View style={{ height: 150, backgroundColor: 'grey', alignItems: 'center', justifyContent: 'center' }}>
+          <Image
+            source={require('./assets/adaptive-icon.png')}
+            style={{ width: 120, height: 120, borderRadius: 60 }}
+          />
+        </View>
+        <DrawerItemList {...props} />
+      </DrawerContentScrollView>
+    );
+  }
+
+  
 
   return (
     <FavProvider>
       <UserProvider>
         <Provider store={store}>
           <NativeBaseProvider>
+            <StatusBar animated={true} />
             <NavigationContainer>
-              <Drawer.Navigator initialRouteName="Home">
-                <Drawer.Screen name="Home" component={MyTabs} />
+              <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>
+                <Drawer.Screen name="Home" component={MyTabs} options={{
+                  drawerIcon: ({ focused, color, size }) => (
+                    <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
+                  ),
+                }} />
                 <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} />
                 <Drawer.Screen name="MyCartStack" component={MyCartStack} />
               </Drawer.Navigator>
