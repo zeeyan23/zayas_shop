@@ -16,6 +16,7 @@ import { Provider, useSelector } from 'react-redux';
 import { UserProvider } from './src/Context/CartContext';
 import initializeStore from './src/redux/store';
 import AllFavorites from './components/AllFavorites';
+import { FavProvider } from './src/Context/FavoritesContext';
 
 function HomeScreen({ navigation }) {
   return (
@@ -148,19 +149,21 @@ export default function App() {
 
 
   return (
-    <UserProvider>
-    <Provider store={store}>
-      <NativeBaseProvider>
-        <NavigationContainer>
-          <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={MyTabs} />
-            <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} />
-            <Drawer.Screen name="MyCartStack" component={MyCartStack} />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </NativeBaseProvider>
-    </Provider>
-    </UserProvider>
+    <FavProvider>
+      <UserProvider>
+        <Provider store={store}>
+          <NativeBaseProvider>
+            <NavigationContainer>
+              <Drawer.Navigator initialRouteName="Home">
+                <Drawer.Screen name="Home" component={MyTabs} />
+                <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} />
+                <Drawer.Screen name="MyCartStack" component={MyCartStack} />
+              </Drawer.Navigator>
+            </NavigationContainer>
+          </NativeBaseProvider>
+        </Provider>
+      </UserProvider>
+    </FavProvider>
   );
 }
 

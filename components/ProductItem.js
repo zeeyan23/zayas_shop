@@ -8,6 +8,7 @@ import { useToast } from 'native-base';
 import { useDispatch } from "react-redux";
 import { updateCount } from '../src/redux/reducers/reducer';
 import { cartData } from "../src/Context/CartContext";
+import { favData  } from "../src/Context/FavoritesContext";
 
 function ProductItem({product}){
 
@@ -17,6 +18,7 @@ function ProductItem({product}){
     const toast = useToast();
     const dispatch = useDispatch();
     const { updateUser } = cartData();
+    const { updateFav } = favData();
     const {
         isOpen,
         onOpen,
@@ -71,6 +73,7 @@ function ProductItem({product}){
                 description: "Successfully Added To The Favorites!"
             });
             setFavorited(true);
+            updateFav(response.data.data);
         } catch (error) {
             console.log(error)
         }
