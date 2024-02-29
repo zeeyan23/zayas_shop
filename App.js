@@ -5,7 +5,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { IconButton, NativeBaseProvider, VStack ,Button} from 'native-base';
+import { IconButton, NativeBaseProvider, VStack ,Button, Box, Popover} from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { createStackNavigator } from '@react-navigation/stack';
 import MyCart from './components/Screens/MyCart';
@@ -177,9 +177,44 @@ export default function App() {
                   drawerIcon: ({ focused, color, size }) => (
                     <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
                   ),
+                  headerRight: () => (
+                    <Box h="60%" alignItems="center">
+                      <Popover trigger={triggerProps => {
+                      return <IconButton
+                        size={10}
+                        {...triggerProps}
+                        icon={<MaterialCommunityIcons name="account" size={20} color="#005db4" />}
+                        borderColor={"#005db4"}
+                        borderWidth={1}
+                        borderRadius={"full"}
+                        right={4}
+                      />
+                    }}>
+                        <Popover.Content accessibilityLabel="Delete Customerd" w="56" shadow={5}>
+                          <Popover.Arrow />
+                          <Popover.Header flexDirection={"row"} justifyContent={"center"}>
+                            Sign up <Ionicons name='person-add' size={20} color={"#005db4"}/> / Login In <Ionicons name='log-in' size={25} color={"#005db4"}/>
+                          </Popover.Header>
+                          
+                          <Popover.Footer justifyContent="space-around">
+                            <Button.Group space={10}>
+                              <Button colorScheme="darkBlue" variant="solid">
+                                Sign Up
+                              </Button>
+                              <Button colorScheme="darkBlue" variant="outline">Login</Button>
+                            </Button.Group>
+                          </Popover.Footer>
+                        </Popover.Content>
+                      </Popover>
+                    </Box>
+                  ),
                 }} />
                 <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} />
-                <Drawer.Screen name="MyCartStack" component={MyCartStack} />
+                <Drawer.Screen name="Cart Items" component={MyCartStack}  options={{
+                  drawerIcon: ({ focused, color, size }) => (
+                    <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
+                  ),
+                }}/>
               </Drawer.Navigator>
             </NavigationContainer>
           </NativeBaseProvider>
