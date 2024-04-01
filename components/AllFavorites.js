@@ -1,9 +1,9 @@
 import axios from "axios";
 import { Box, Button, Center, Checkbox, HStack, Icon, Pressable, Radio, Stack, Text, Toast, VStack, View, } from "native-base";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { mainURL } from "../utils/Urls";
 import { Animated, BackHandler, ScrollView, TouchableOpacity } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import CartItem from "./Screens/CartItem";
 import FavoriteItem from "./Screens/FavoriteItem";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -38,16 +38,31 @@ function AllFavorites(){
         getAllFavorites();
     },[fav]);
 
+    // useEffect(() => {
+    //     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+    //       resetAnimation();
+    //       return true;
+    //     });
+    
+    //     return () => {
+    //       backHandler.remove();
+    //     };
+    // }, [navigation]);
+
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-          resetAnimation();
-          return true;
+            if (navigation.isFocused()) {
+                resetAnimation();
+                return true;
+            }
+            return false; // Allow normal back behavior if not focused
         });
-    
+
         return () => {
-          backHandler.remove();
+            backHandler.remove();
         };
     }, [navigation]);
+
 
     useEffect(()=>{
         const unsubscribe = navigation.addListener('tabPress', e => {

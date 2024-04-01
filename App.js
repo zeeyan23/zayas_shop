@@ -5,7 +5,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { IconButton, NativeBaseProvider, VStack ,Button, Box, Popover} from 'native-base';
+import { IconButton, NativeBaseProvider, VStack ,Button, Box, Popover, HStack, Checkbox} from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { createStackNavigator } from '@react-navigation/stack';
 import MyCart from './components/Screens/MyCart';
@@ -18,6 +18,8 @@ import { UserProvider } from './src/Context/CartContext';
 import initializeStore from './src/redux/store';
 import AllFavorites from './components/AllFavorites';
 import { FavProvider } from './src/Context/FavoritesContext';
+
+import Account from './components/Screens/Account';
 
 function HomeScreen({ navigation }) {
   return (
@@ -91,6 +93,12 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
+
+function MyAccount(){
+  return(
+    <Account />
+  )
+}
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -149,7 +157,8 @@ export default function App() {
   }
 
   function CustomDrawerContent(props) {
-    const { navigation } = props;
+    const navigation = useNavigation();
+
     return (
       <DrawerContentScrollView {...props}>
         <View style={{ height: 150, backgroundColor: 'grey', alignItems: 'center', justifyContent: 'center' }}>
@@ -173,48 +182,14 @@ export default function App() {
             <StatusBar animated={true} />
             <NavigationContainer>
               <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>
-                <Drawer.Screen name="Home" component={MyTabs} options={{
-                  drawerIcon: ({ focused, color, size }) => (
-                    <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
-                  ),
-                  headerRight: () => (
-                    <Box h="60%" alignItems="center">
-                      <Popover trigger={triggerProps => {
-                      return <IconButton
-                        size={10}
-                        {...triggerProps}
-                        icon={<MaterialCommunityIcons name="account" size={20} color="#005db4" />}
-                        borderColor={"#005db4"}
-                        borderWidth={1}
-                        borderRadius={"full"}
-                        right={4}
-                      />
-                    }}>
-                        <Popover.Content accessibilityLabel="Delete Customerd" w="56" shadow={5}>
-                          <Popover.Arrow />
-                          <Popover.Header flexDirection={"row"} justifyContent={"center"}>
-                            Sign up <Ionicons name='person-add' size={20} color={"#005db4"}/> / Login In <Ionicons name='log-in' size={25} color={"#005db4"}/>
-                          </Popover.Header>
-                          
-                          <Popover.Footer justifyContent="space-around">
-                            <Button.Group space={10}>
-                              <Button colorScheme="darkBlue" variant="solid">
-                                Sign Up
-                              </Button>
-                              <Button colorScheme="darkBlue" variant="outline">Login</Button>
-                            </Button.Group>
-                          </Popover.Footer>
-                        </Popover.Content>
-                      </Popover>
-                    </Box>
-                  ),
-                }} />
+                <Drawer.Screen name="Home" component={MyTabs}/>
                 <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} />
                 <Drawer.Screen name="Cart Items" component={MyCartStack}  options={{
                   drawerIcon: ({ focused, color, size }) => (
                     <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
                   ),
                 }}/>
+                <Drawer.Screen name="Account" component={MyAccount}/>
               </Drawer.Navigator>
             </NavigationContainer>
           </NativeBaseProvider>
