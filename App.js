@@ -20,8 +20,9 @@ import AllFavorites from './components/AllFavorites';
 import { FavProvider } from './src/Context/FavoritesContext';
 
 import Account from './components/Screens/Account';
+import Settings from './components/Screens/Settings';
 
-function HomeScreen({ navigation }) {
+function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button
@@ -77,9 +78,7 @@ function Feed() {
 
 function Profile() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile!</Text>
-    </View>
+    <Settings />
   );
 }
 
@@ -182,14 +181,22 @@ export default function App() {
             <StatusBar animated={true} />
             <NavigationContainer>
               <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>
-                <Drawer.Screen name="Home" component={MyTabs}/>
-                <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} />
-                <Drawer.Screen name="Cart Items" component={MyCartStack}  options={{
+                <Drawer.Screen name="Home" component={MyTabs} options={{
+                  drawerIcon: ({ focused, color, size }) => (
+                    <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
+                  ),
+                }}/>
+                {/* <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} /> */}
+                <Drawer.Screen name="MyCartStack" component={MyCartStack}  options={{
                   drawerIcon: ({ focused, color, size }) => (
                     <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
                   ),
                 }}/>
-                <Drawer.Screen name="Account" component={MyAccount}/>
+                <Drawer.Screen name="Account" component={MyAccount} options={{
+                  drawerIcon: ({ focused, color, size }) => (
+                    <Ionicons name={focused ? 'person' : 'person-outline'} size={size} color={color} />
+                  ),
+                }}/>
               </Drawer.Navigator>
             </NavigationContainer>
           </NativeBaseProvider>
