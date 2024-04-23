@@ -25,7 +25,6 @@ function Account(){
     const [country, setCountry] = useState(null);
     const [state, setState] = useState(null);
     const [city, setCity] = useState(null);
-    const navigation = useNavigation();
 
     const [isFocus, setIsFocus] = useState(false);
     let i;
@@ -42,7 +41,9 @@ function Account(){
     const [accCreated, setAccCreated] = useState(false);
     const [emptyForm, setEmptyForm] = useState(false);
     const bounceValue = new Animated.Value(0);
-  
+
+    const navigation = useNavigation();
+
     const openModal = placement => {
       setOpen(true);
       setPlacement(placement);
@@ -71,7 +72,7 @@ function Account(){
             // Reset the animation when the modal closes
             bounceValue.setValue(0);
         }
-    }, [open, accCreated]);
+    }, [open, accCreated, emptyForm, bounceValue]);
 
     const data = [
         { label: 'Item 1', value: '1' },
@@ -200,7 +201,8 @@ function Account(){
         const emptyFields = requiredFields.filter(field => !formData[field]);
 
         if (emptyFields.length > 0) {
-            openEmptyFormModal("center")
+            // openEmptyFormModal("center")
+            openAccountModal("center");
             return; 
         }
         try {
@@ -235,12 +237,73 @@ function Account(){
         }
     }
 
-    const LoginScreen = async () => {
-        const navigation = useNavigation();
-        navigation.navigate('MyCartStack');
+    const LoginScreen= () => {
+        navigation.navigate('LoginScreen');
     }
     return(
         <>
+            {/* <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.container}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <ScrollView contentContainerStyle={styles.inner} keyboardShouldPersistTaps="handled">
+                        <View style={styles.inner}>
+                            <VStack alignItems={"center"} paddingTop={50} paddingBottom={50}>
+                                <Center w="100%">
+                                    <Box safeArea p="2" py="8" w="90%" maxW="290">
+                                        <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
+                                        color: "warmGray.50"
+                                    }}>
+                                        Welcome
+                                        </Heading>
+                                        <Heading mt="1" _dark={{
+                                        color: "warmGray.200"
+                                    }} color="coolGray.600" fontWeight="medium" size="xs">
+                                        Sign in to continue!
+                                        </Heading>
+
+                                        <VStack space={3} mt="5">
+                                        <FormControl>
+                                            <FormControl.Label>Email ID</FormControl.Label>
+                                            <Input />
+                                            
+                                        </FormControl>
+                                        <FormControl>
+                                            <FormControl.Label>Password</FormControl.Label>
+                                            <Input type="password" />
+                                            <Link _text={{
+                                            fontSize: "xs",
+                                            fontWeight: "500",
+                                            color: "indigo.500"
+                                        }} alignSelf="flex-end" mt="1">
+                                            Forget Password?
+                                            </Link>
+                                        </FormControl>
+                                        <Button mt="2" colorScheme="indigo">
+                                            Sign in
+                                        </Button>
+                                        <HStack mt="6" justifyContent="center">
+                                            <Text fontSize="sm" color="coolGray.600" _dark={{
+                                            color: "warmGray.200"
+                                        }}>
+                                            I'm a new user.{" "}
+                                            </Text>
+                                            <Link _text={{
+                                            color: "indigo.500",
+                                            fontWeight: "medium",
+                                            fontSize: "sm"
+                                        }} >
+                                            Sign Up
+                                            </Link>
+                                        </HStack>
+                                        </VStack>
+                                    </Box>
+                                    </Center>
+                            </VStack>
+                        </View>
+                    </ScrollView>
+                </TouchableWithoutFeedback>
+            </KeyboardAvoidingView> */}
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.container}>
@@ -249,9 +312,8 @@ function Account(){
                         <View style={styles.inner}>
                             <VStack alignItems={"center"} paddingTop={50} paddingBottom={50}>
                                 <Text style={styles.header}>Let's get started</Text>
-                                {/* Add more content here */}
                                 <FormControl key={formKey}  isRequired isInvalid={'username' in errors} padding={5} borderTopLeftRadius={15} borderTopRightRadius={15}>       
-                                <Stack mx="5">
+                                <Stack>
                                     <FormControl.Label>Username</FormControl.Label>
                                     <Input onChangeText={changeTextHandler} type="text" placeholder="Username" fontSize={"md"} />
                                     
@@ -358,8 +420,24 @@ function Account(){
                                     <TextArea onChangeText={changeAddressHandler} h={20} placeholder="Enter your address" fontSize={"md"} />
                                     
                                     <Box paddingTop={5}>
-                                        <Button onPress={createAccount}>Create account</Button>
+                                        <Button mt="2" colorScheme="indigo" onPress={createAccount}>
+                                            Create account
+                                        </Button>
                                     </Box>  
+                                    <HStack mt="6" justifyContent="center">
+                                            <Text fontSize="sm" color="coolGray.600" _dark={{
+                                            color: "warmGray.200"
+                                        }}>
+                                            I'm a new user.{" "}
+                                            </Text>
+                                            <Link _text={{
+                                            color: "indigo.500",
+                                            fontWeight: "medium",
+                                            fontSize: "sm"
+                                        }} onPress={LoginScreen} >
+                                            LogIn
+                                            </Link>
+                                    </HStack>
                                 </Stack>
                             </FormControl>
                             </VStack>
@@ -367,18 +445,7 @@ function Account(){
                     </ScrollView>
                 </TouchableWithoutFeedback>
             </KeyboardAvoidingView>
-            {/* <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.container}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={styles.inner}>
-                        <VStack alignItems={"center"} paddingTop={50} paddingBottom={50}>
-                            <Text style={styles.header}>Let's get started</Text>
-                        </VStack>
-                        
-                    </View>
-                </TouchableWithoutFeedback>
-            </KeyboardAvoidingView> */}
+
             <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>
                 <Modal.Content maxWidth="350" {...styles[placement]}>
                 <Modal.Header >Account already exists!</Modal.Header>
@@ -397,11 +464,11 @@ function Account(){
                     LogIn to your account, for personalized experince
                 </Modal.Body>
                 <Modal.Footer>
-
+                    <Button onPress={LoginScreen}>Login</Button>
                 </Modal.Footer>
                 </Modal.Content>
             </Modal>
-            <Modal isOpen={emptyForm} onClose={() => setEmptyForm(false)} safeAreaTop={true}>
+            {/* <Modal isOpen={emptyForm} onClose={() => setEmptyForm(false)} safeAreaTop={true}>
                 <Modal.Content maxWidth="350" {...styles[placement]}>
                 <Modal.Header >Invalid Form Submission</Modal.Header>
                 <Modal.Body>
@@ -411,7 +478,7 @@ function Account(){
 
                 </Modal.Footer>
                 </Modal.Content>
-            </Modal>
+            </Modal> */}
         </>
     )
 }

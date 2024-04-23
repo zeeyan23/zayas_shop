@@ -5,7 +5,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { IconButton, NativeBaseProvider, VStack ,Button, Box, Popover, HStack, Checkbox} from 'native-base';
+import { IconButton, NativeBaseProvider, VStack ,Button, Box, Popover, HStack, Checkbox, Circle, Icon, Square, View as NativeView} from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { createStackNavigator } from '@react-navigation/stack';
 import MyCart from './components/Screens/MyCart';
@@ -21,7 +21,9 @@ import { FavProvider } from './src/Context/FavoritesContext';
 
 import Account from './components/Screens/Account';
 import Settings from './components/Screens/Settings';
+import LoginScreen from './components/Screens/Login';
 
+var TOKEN=null, USERNAME=null;
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -44,7 +46,9 @@ function NotificationsScreen({ navigation }) {
 function Feed() {
   const navigation = useNavigation();
   const totalCount = useSelector((state) => state.count.value);
-
+  const token = useSelector((state) => state.token.value);
+  const username = useSelector((state) => state.username.value);
+  TOKEN=token, USERNAME=username;
   const MyCart = () => {
     // Navigate to the MyCartStack
     navigation.navigate('MyCartStack');
@@ -105,16 +109,19 @@ function MyTabs() {
       screenOptions={{
         tabBarActiveTintColor: '#005db4',
         tabBarLabelStyle:{fontWeight:'bold'},
+        
       }}
     >
       <Tab.Screen
         name="Feed"
         component={Feed}
+      
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
+          
         }}
       />
       <Tab.Screen
@@ -144,6 +151,7 @@ function MyTabs() {
 export default function App() {
   const [store, setStore] = useState(null);
 
+
   useEffect(() => {
     initializeStore.then((configuredStore) => {
       setStore(configuredStore);
@@ -172,11 +180,18 @@ export default function App() {
   }
 
   
+  const getFirstLetter = () => {
+    if (USERNAME) {
+      return USERNAME.charAt(0);
+    } else {
+      return '👤';
+    }
+  };
 
   return (
     <FavProvider>
       <UserProvider>
-        <Provider store={store}>
+        <Provider store={store} >
           <NativeBaseProvider>
             <StatusBar animated={true} />
             <NavigationContainer>
@@ -185,8 +200,15 @@ export default function App() {
                   drawerIcon: ({ focused, color, size }) => (
                     <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
                   ),
+                  headerRight: ({ color, size }) => (
+                    <Circle size="40px" bg="darkBlue.100" marginRight={2}>
+                      <Box _text={{
+                        fontWeight: "bold",
+                        fontSize: "lg",
+                        color: "violet.900"}}>{getFirstLetter()}</Box>
+                    </Circle>
+                  )
                 }}/>
-                {/* <Drawer.Screen name="NotificationsDrawer" component={NotificationsScreen} /> */}
                 <Drawer.Screen name="MyCartStack" component={MyCartStack}  options={{
                   drawerIcon: ({ focused, color, size }) => (
                     <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
@@ -196,6 +218,9 @@ export default function App() {
                   drawerIcon: ({ focused, color, size }) => (
                     <Ionicons name={focused ? 'person' : 'person-outline'} size={size} color={color} />
                   ),
+                }}/>
+                <Drawer.Screen name="LoginScreen" component={LoginScreen} options={{
+                  drawerItemStyle:({display:'none'})
                 }}/>
               </Drawer.Navigator>
             </NavigationContainer>
