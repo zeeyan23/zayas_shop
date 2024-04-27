@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { updateCount } from '../src/redux/reducers/reducer';
 import { cartData } from "../src/Context/CartContext";
 import { favData  } from "../src/Context/FavoritesContext";
+import { useSelector } from 'react-redux';
+0
 
 function ProductItem({product}){
 
@@ -19,6 +21,8 @@ function ProductItem({product}){
     const dispatch = useDispatch();
     const { updateUser } = cartData();
     const { updateFav } = favData();
+    const user_id = useSelector((state) => state.user_id.value);
+
     const {
         isOpen,
         onOpen,
@@ -62,7 +66,8 @@ function ProductItem({product}){
 
     async function favoritePressHandler(product_id){
         const formData={
-            product_id: product_id
+            product_id: product_id,
+            user_id: user_id
         }
 
         try {

@@ -9,6 +9,7 @@ import FavoriteItem from "./Screens/FavoriteItem";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChipButton from "../utils/ChipButton";
 import { favData } from "../src/Context/FavoritesContext";
+import { useSelector } from "react-redux";
 
 function AllFavorites(){
 
@@ -19,13 +20,13 @@ function AllFavorites(){
 
     const [checkedAll, setCheckedAll] = useState(false);
     const [checked, setChecked] = useState({});
-
+    const user_id = useSelector((state) => state.user_id.value);
     const { fav } = favData();
 
     useEffect(()=>{
         async function getAllFavorites(){
             try {
-                await axios.get(`${mainURL}/zayas_shop/savetofavorite/`).then((response)=>{
+                await axios.get(`${mainURL}/zayas_shop/savetofavorite/?user_id=${user_id}`).then((response)=>{
                     setAllFavorites(response.data.reverse());
                 });
                 
@@ -36,7 +37,7 @@ function AllFavorites(){
         }
 
         getAllFavorites();
-    },[fav]);
+    },[fav,setAllFavorites]);
 
     // useEffect(() => {
     //     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import countReducer from './reducers/reducer';
 import tokenReducer from './reducers/tokenreducer';
 import userReducer from './reducers/userReducer';
+import useridreducer from './reducers/useridreducer';
 import axios from 'axios';
 import { mainURL } from '../../utils/Urls';
 
@@ -14,7 +15,8 @@ const configureStoreWithInitialCount = async () => {
       reducer: {
         count: countReducer,
         token: tokenReducer, 
-        username: userReducer
+        username: userReducer,
+        user_id: useridreducer
       },
       preloadedState: {
         count: {
@@ -28,7 +30,8 @@ const configureStoreWithInitialCount = async () => {
       reducer: {
         count: countReducer,
         token: tokenReducer, 
-        username: userReducer
+        username: userReducer,
+        user_id: useridreducer
       },
     });
   }

@@ -5,7 +5,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { IconButton, NativeBaseProvider, VStack ,Button, Box, Popover, HStack, Checkbox, Circle, Icon, Square, View as NativeView} from 'native-base';
+import { IconButton, NativeBaseProvider, VStack ,Button, Box, Popover, HStack, Checkbox, Circle, Icon, Square, View as NativeView, Heading} from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { createStackNavigator } from '@react-navigation/stack';
 import MyCart from './components/Screens/MyCart';
@@ -18,7 +18,7 @@ import { UserProvider } from './src/Context/CartContext';
 import initializeStore from './src/redux/store';
 import AllFavorites from './components/AllFavorites';
 import { FavProvider } from './src/Context/FavoritesContext';
-
+import { LinearGradient } from 'expo-linear-gradient';
 import Account from './components/Screens/Account';
 import Settings from './components/Screens/Settings';
 import LoginScreen from './components/Screens/Login';
@@ -49,6 +49,7 @@ function Feed() {
   const token = useSelector((state) => state.token.value);
   const username = useSelector((state) => state.username.value);
   TOKEN=token, USERNAME=username;
+  
   const MyCart = () => {
     // Navigate to the MyCartStack
     navigation.navigate('MyCartStack');
@@ -163,17 +164,28 @@ export default function App() {
     return null;
   }
 
+  const config = {
+    dependencies: {
+      'linear-gradient': LinearGradient
+    }
+  };
+
   function CustomDrawerContent(props) {
     const navigation = useNavigation();
-
+    
+    
     return (
       <DrawerContentScrollView {...props}>
-        <View style={{ height: 150, backgroundColor: 'grey', alignItems: 'center', justifyContent: 'center' }}>
-          <Image
-            source={require('./assets/adaptive-icon.png')}
-            style={{ width: 120, height: 120, borderRadius: 60 }}
-          />
+        <View style={{ height: 150, backgroundColor: '#00284D', alignItems: 'center', justifyContent: 'center' }}>
+          <Circle size="50px" bg="darkBlue.100">
+            <Box _text={{
+              fontWeight: "bold",
+              fontSize: "lg",
+              color: "violet.900"}}>{getFirstLetter()}</Box>
+          </Circle>
+          <Heading size="xs" color={"white"} marginTop={2}>{USERNAME}</Heading>
         </View>
+          
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
     );
@@ -182,7 +194,7 @@ export default function App() {
   
   const getFirstLetter = () => {
     if (USERNAME) {
-      return USERNAME.charAt(0);
+      return USERNAME.charAt(0).toUpperCase();
     } else {
       return '👤';
     }
@@ -192,7 +204,7 @@ export default function App() {
     <FavProvider>
       <UserProvider>
         <Provider store={store} >
-          <NativeBaseProvider>
+          <NativeBaseProvider config={config}>
             <StatusBar animated={true} />
             <NavigationContainer>
               <Drawer.Navigator initialRouteName="Home" drawerContent={props => <CustomDrawerContent {...props} />}>

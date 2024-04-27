@@ -20,6 +20,7 @@ import { Box, FormControl, HStack, Icon, Input, Pressable, Stack, TextArea,Butto
 import { useDispatch } from 'react-redux';
 import { updateToken } from '../../src/redux/reducers/tokenreducer';
 import { updateUsername } from '../../src/redux/reducers/userReducer';
+import { updateId } from '../../src/redux/reducers/useridreducer';
 import { useSelector } from 'react-redux';
 
 function LoginScreen(){
@@ -58,31 +59,38 @@ function LoginScreen(){
         return true;
     };
 
-    async function SignInHandler(){
+    async function SignInHandler() {
         const requiredFields = ['email_address', 'password'];
         const emptyFields = requiredFields.filter(field => !formData[field]);
+    
+        if (emptyFields.length > 0) {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                email_address: emptyFields.includes('email_address') ? 'Email address is required' : '',
+                password: emptyFields.includes('password') ? 'Password is required' : '',
+            }));
+            return; // Exit early if there are empty fields
+        }
+    
         try {
-            const response = await axios.post(`${mainURL}/zayas_shop/auth_login/`, 
-              formData,
-              {
-                  headers: {
-                      'Content-Type': 'application/json',
-                  }
-              }
-          );
-          
-          if (validate()) {
-            dispatch(updateToken(response.data.token)); 
+            const response = await axios.post(
+                `${mainURL}/zayas_shop/auth_login/`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
+    
+            dispatch(updateToken(response.data.token));
             dispatch(updateUsername(response.data.username));
-            navigation.navigate('Feed'); 
-          } else {
-              console.log('Validation Failed');
-          }
+            dispatch(updateId(response.data.user_id));
+            navigation.navigate('Feed');
         } catch (error) {
             if (error.response) {
                 console.log('Status Code:', error.response.status);
                 console.log('Data:', error.response.data);
-                
             } else if (error.request) {
                 console.log('Request:', error.request);
             } else {
@@ -90,6 +98,40 @@ function LoginScreen(){
             }
         }
     }
+    
+    // async function SignInHandler(){
+    //     const requiredFields = ['email_address', 'password'];
+    //     const emptyFields = requiredFields.filter(field => !formData[field]);
+    //     try {
+    //         const response = await axios.post(`${mainURL}/zayas_shop/auth_login/`, 
+    //           formData,
+    //           {
+    //               headers: {
+    //                   'Content-Type': 'application/json',
+    //               }
+    //           }
+    //       );
+          
+    //       if (validate()) {
+    //         dispatch(updateToken(response.data.token)); 
+    //         dispatch(updateUsername(response.data.username));
+    //         dispatch(updateId(response.data.user_id));
+    //         navigation.navigate('Feed'); 
+    //       } else {
+    //           console.log('Validation Failed');
+    //       }
+    //     } catch (error) {
+    //         if (error.response) {
+    //             console.log('Status Code:', error.response.status);
+    //             console.log('Data:', error.response.data);
+                
+    //         } else if (error.request) {
+    //             console.log('Request:', error.request);
+    //         } else {
+    //             console.log('Error:', error.message);
+    //         }
+    //     }
+    // }
     return(
         <>
             <KeyboardAvoidingView
