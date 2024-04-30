@@ -6,6 +6,7 @@ import { mainURL } from "../utils/Urls";
 import Carousel, { Pagination, PaginationLight } from 'react-native-x-carousel';
 import { Button, HStack, VStack } from "native-base";
 import ChipButton from "../utils/ChipButton";
+import { useSelector } from "react-redux";
 
 const { width } = Dimensions.get('window');
 
@@ -14,6 +15,7 @@ function AllProducts(){
     const [allProducts,setAllProducts]=useState([]);
     const [allCategories,setAllCategories]=useState([]);
     const [offersItems,setOffersItems]=useState([]);
+    const user_id = useSelector((state) => state.user_id.value);
 
     useEffect(()=>{
         async function getOfferItems(){
@@ -39,8 +41,9 @@ function AllProducts(){
 
     useEffect(()=>{
         async function getAllProducts(){
+
             try {
-                await axios.get(`${mainURL}/zayas_shop/getAllItems`).then((response)=>{
+                await axios.get(`${mainURL}/zayas_shop/getAllItems?user_id=${user_id}`).then((response)=>{
                     setAllProducts(response.data);
                 });
 

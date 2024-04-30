@@ -23,6 +23,7 @@ function ProductItem({product}){
     const { updateFav } = favData();
     const user_id = useSelector((state) => state.user_id.value);
 
+    
     const {
         isOpen,
         onOpen,
@@ -47,7 +48,8 @@ function ProductItem({product}){
     async function addToCart(product_id){
         const formData={
             product_id: product_id,
-            quantity : quantity
+            quantity : quantity,
+            user_id : user_id
         }
 
         try {
@@ -60,7 +62,9 @@ function ProductItem({product}){
             updateUser(response.data.data)
             dispatch(updateCount(newCount));
         } catch (error) {
-            console.log(error)
+            toast.show({
+                description: "Please create account or log into your account"
+            });
         }
     }
 
@@ -79,7 +83,9 @@ function ProductItem({product}){
             setFavorited(true);
             updateFav(response.data.data);
         } catch (error) {
-            console.log(error)
+            toast.show({
+                description: "Looks you haven't LoggedIn or Created the account!!!"
+            });
         }
     }
 
@@ -102,7 +108,7 @@ function ProductItem({product}){
                     colorScheme={"darkBlue"}
                     _icon={{
                         as: MaterialIcons,
-                        name:  favorited ? 'favorite' : (product.is_favorited ? 'favorite' : 'favorite-border')
+                        name:  favorited ? 'favorite' : (product.to_be_marked ? 'favorite' : 'favorite-border')
                     }} 
                     onPress={()=>favoritePressHandler(product.id)}
                 />
