@@ -7,6 +7,7 @@ import Carousel, { Pagination, PaginationLight } from 'react-native-x-carousel';
 import { Button, HStack, VStack } from "native-base";
 import ChipButton from "../utils/ChipButton";
 import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 
 const { width } = Dimensions.get('window');
 
@@ -16,6 +17,24 @@ function AllProducts(){
     const [allCategories,setAllCategories]=useState([]);
     const [offersItems,setOffersItems]=useState([]);
     const user_id = useSelector((state) => state.user_id.value);
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        async function getAllProducts(){
+
+            try {
+                await axios.get(`${mainURL}/zayas_shop/getAllItems?user_id=${user_id}`).then((response)=>{
+                    setAllProducts(response.data);
+                    console.log(JSON.stringify(response.data, null, 2));
+                });
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getAllProducts();
+    }, [isFocused])
 
     useEffect(()=>{
         async function getOfferItems(){
@@ -45,6 +64,7 @@ function AllProducts(){
             try {
                 await axios.get(`${mainURL}/zayas_shop/getAllItems?user_id=${user_id}`).then((response)=>{
                     setAllProducts(response.data);
+                    console.log(JSON.stringify(response.data, null, 2));
                 });
 
             } catch (error) {
@@ -129,7 +149,7 @@ function AllProducts(){
                 </View>
                 <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent:'center'}}>
                     {allProducts.map((product,index)=>(
-                        <ProductItem product={product} key={index}/>
+                        <ProductItem product={product} key={index} />
                     ))}
                 </View>
             </ScrollView>

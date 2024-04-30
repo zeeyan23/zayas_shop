@@ -54,7 +54,7 @@ function Feed() {
     // Navigate to the MyCartStack
     navigation.navigate('MyCartStack');
   };
-
+    
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <AllProducts />
