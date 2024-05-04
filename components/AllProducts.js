@@ -25,7 +25,6 @@ function AllProducts(){
             try {
                 await axios.get(`${mainURL}/zayas_shop/getAllItems?user_id=${user_id}`).then((response)=>{
                     setAllProducts(response.data);
-                    console.log(JSON.stringify(response.data, null, 2));
                 });
 
             } catch (error) {
@@ -64,7 +63,6 @@ function AllProducts(){
             try {
                 await axios.get(`${mainURL}/zayas_shop/getAllItems?user_id=${user_id}`).then((response)=>{
                     setAllProducts(response.data);
-                    console.log(JSON.stringify(response.data, null, 2));
                 });
 
             } catch (error) {

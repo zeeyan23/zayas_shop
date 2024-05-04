@@ -174,21 +174,21 @@ function Account(){
         setData({ ...formData, city: enteredValue.label });
         setCity(enteredValue.value);
     }
-    const validate = () => {
-        if (formData.username === undefined) {
-          setErrors({ ...errors,
-            username: 'Name is required'
-          });
-          return false;
-        } else if (formData.username.length < 3) {
-          setErrors({ ...errors,
-            username: 'Name is too short'
-          });
-          return false;
-        }
+    // const validate = () => {
+    //     if (formData.username === undefined) {
+    //       setErrors({ ...errors,
+    //         username: 'Name is required'
+    //       });
+    //       return false;
+    //     } else if (formData.username.length < 3) {
+    //       setErrors({ ...errors,
+    //         username: 'Name is too short'
+    //       });
+    //       return false;
+    //     }
     
-        return true;
-    };
+    //     return true;
+    // };
     
    
     function resetForm() {
@@ -197,11 +197,11 @@ function Account(){
     }
     
     async function createAccount(){
+        navigation.navigate('LoginScreen');
         const requiredFields = ['address', 'email_address', 'password', 'username'];
         const emptyFields = requiredFields.filter(field => !formData[field]);
 
         if (emptyFields.length > 0) {
-            // openEmptyFormModal("center")
             openAccountModal("center");
             return; 
         }
@@ -214,20 +214,18 @@ function Account(){
                   }
               }
           );
-          setData({});
-          // Optionally, you can also reset any other state variables related to the form fields
-          // resetStateVariables();
-          if (validate()) {
-              openAccountModal("center");
-              resetForm();
-          } else {
-              console.log('Validation Failed');
-          }
+        //   resetForm();
+          navigation.navigate('LoginScreen');
+        //   setData({});
+        //   if (validate()) {
+        //       openAccountModal("center");
+        //       resetForm();
+        //   } else {
+        //       console.log('Validation Failed');
+        //   }
         } catch (error) {
             if (error.response) {
                 openModal("center")
-                console.log('Status Code:', error.response.status);
-                console.log('Data:', error.response.data);
                 
             } else if (error.request) {
                 console.log('Request:', error.request);
