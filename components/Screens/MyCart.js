@@ -7,18 +7,20 @@ import axios from "axios";
 import { cartData } from "../../src/Context/CartContext";
 import { mainURL } from "../../utils/Urls";
 import CartItem from "./CartItem";
+import { useSelector } from "react-redux";
 
 
 function MyCart(){
   const [mode, setMode] = useState('Basic');
   const [cartItems, setCartItems] = useState([]);
   const { user } = cartData();
+  const user_id = useSelector((state) => state.user_id.value);
 
   useEffect(() => {
     // if(user){
       async function getAllCartItems() {
         try {
-          const response = await axios.get(`${mainURL}/zayas_shop/savetocart/`);
+          const response = await axios.get(`${mainURL}/zayas_shop/savetocart/?user_id=${user_id}`);
           setCartItems(response.data.data);
         } catch (error) {
           console.log(error);
@@ -105,7 +107,12 @@ function MyCart(){
       </Box>
   
     return <Box bg="white" safeArea flex={1}>
-        <SwipeListView data={listData} renderItem={renderItem} renderHiddenItem={renderHiddenItem} rightOpenValue={-130} previewRowKey={'0'} previewOpenValue={-40} previewOpenDelay={3000} onRowDidOpen={onRowDidOpen} />
+        {cartItems.length > 0 ? <SwipeListView data={listData} renderItem={renderItem} renderHiddenItem={renderHiddenItem} rightOpenValue={-130} previewRowKey={'0'} previewOpenValue={-40} previewOpenDelay={3000} onRowDidOpen={onRowDidOpen} /> :
+          <Box flex={1} justifyContent={"center"} alignItems={"center"} backgroundColor={"contrastThreshold"}>
+            <Icon as={<Ionicons name="alert-circle-outline" />} size={"6xl"} color="rose.900" />
+            <Text fontSize={"2xl"} color="rose.800">No cart items found</Text>
+          </Box>
+        }
       </Box>;
   }
 

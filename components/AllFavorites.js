@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChipButton from "../utils/ChipButton";
 import { favData } from "../src/Context/FavoritesContext";
 import { useSelector } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
 
 function AllFavorites(){
 
@@ -171,7 +172,7 @@ function AllFavorites(){
   
     return(
         <>
-            <VStack space={4} h={"full"}  padding={5}>
+            <VStack space={4} h={"full"}  padding={5} background={"white"}>
                 {showRadioButton && <HStack space={6}>
                   <Checkbox
                           shadow={2}
@@ -183,8 +184,8 @@ function AllFavorites(){
                           Select all
                   </Checkbox>
                 </HStack>}
-                <ScrollView>
-                  {allFavorites.map((item,key) => (
+                <ScrollView contentContainerStyle={{flex:1}}>
+                  {allFavorites.length > 0 ? allFavorites.map((item,key) => (
                       <Animated.View style={{ transform: [{ translateX }] }} key={key}>
                           <Center w="full" marginBottom={10} padding={5} bg="#005db4" rounded="md" shadow={3} >
                               <Pressable onLongPress={buttonLongPressHandler} >
@@ -204,12 +205,14 @@ function AllFavorites(){
                               </Center>
                           </HStack>}
                       </Animated.View> 
-                  ))}
+                  )) : 
+                  <Box flex={1} justifyContent={"center"} alignItems={"center"}>
+                    <Icon as={<Ionicons name="heart-dislike-circle" />} size={"6xl"} color="#005db4" />
+                    <Text fontSize={"2xl"} fontWeight={"semibold"} color="#005db4">No Favorited Items Found</Text>
+                  </Box>}
                 </ScrollView>
                 {showRadioButton && <Stack space={3} alignItems="center">
                     <HStack space={100} alignItems="center">
-                      {/* <Button title="Cancel" color={"#005db4"} onPress={cancelHandler}/>
-                      <Button title="Delete" color={"red"}/> */}
                       <Button paddingRight={10} paddingLeft={10} backgroundColor={"blue.600"} onPress={cancelHandler}>Cancel</Button>
                       <Button paddingRight={10} paddingLeft={10} backgroundColor={"danger.500"} onPress={deleteHandler}>Delete</Button>
                     </HStack>

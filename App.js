@@ -128,6 +128,7 @@ function MyTabs() {
       <Tab.Screen
         name="Favorite Items"
         component={Notifications}
+        
         options={{
           tabBarLabel: 'Favorites',
           tabBarIcon: ({ color, size }) => (
