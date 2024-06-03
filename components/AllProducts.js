@@ -4,10 +4,11 @@ import axios from "axios";
 import ProductItem from "./ProductItem";
 import { mainURL } from "../utils/Urls";
 import Carousel, { Pagination, PaginationLight } from 'react-native-x-carousel';
-import { Button, HStack, VStack } from "native-base";
+import { Button, Center, HStack, Icon, Input, Stack, VStack } from "native-base";
 import ChipButton from "../utils/ChipButton";
 import { useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const { width } = Dimensions.get('window');
 
@@ -129,22 +130,34 @@ function AllProducts(){
     return(
         <>  
             <ScrollView stickyHeaderIndices={[1]}>
-                <Carousel
+                {/* <Carousel
                     pagination={PaginationLight}
                     renderItem={renderItem}
                     data={DATA}
                     loop
                     autoplay
-                />
-                <View style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor:'white'}}>
-                    <ScrollView horizontal={true}>
-                        <HStack space={4} justifyContent='center' padding={5}>
-                            {allCategories.map((data, key)=>(
-                                <ChipButton key={key} onPress={()=>filterHandler(data.id)}>{data.category_name}</ChipButton>
-                            ))}
-                        </HStack>
-                    </ScrollView>
-                </View>
+                /> */}
+                <VStack display={"flex"} alignItems={"center"} justifyContent={"center"}>
+                    <Text>Location feature coming soon!...</Text>
+                </VStack>
+                <VStack space="2.5" mt="4" px="3" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor:'white'}}>
+                    <Stack direction="row" mt="1.5">
+                        <VStack w="100%" space={5} alignSelf="center">
+                            <Input placeholder="What's in your mind..." width="100%" borderRadius="4" py="3" px="1" fontSize="14" InputLeftElement={<Icon m="2" ml="3" size="6" color="gray.400" as={<MaterialIcons name="search" />} />} InputRightElement={<Icon m="2" mr="3" size="6" color="gray.400" as={<MaterialIcons name="filter-list" />} />} />
+                        </VStack>
+                    </Stack>
+                    <View>
+                        <ScrollView horizontal={true}>
+                            <HStack space={6} justifyContent='center' padding={5}>
+                                {allCategories.map((data, key)=>(
+                                    <ChipButton key={key} onPress={()=>filterHandler(data.id)}>{data.category_name}</ChipButton>
+                                ))}
+                            </HStack>
+                        </ScrollView>
+                    </View>
+                </VStack>
+                
+                
                 <View style={{flexDirection:'row', flexWrap:'wrap', justifyContent:'center'}}>
                     {allProducts.map((product,index)=>(
                         <ProductItem product={product} key={index} />

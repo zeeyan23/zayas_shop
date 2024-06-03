@@ -22,6 +22,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Account from './components/Screens/Account';
 import Settings from './components/Screens/Settings';
 import LoginScreen from './components/Screens/Login';
+import SpecialOffers from './components/Screens/SpecialOffers';
 
 var TOKEN=null, USERNAME=null;
 function HomeScreen() {
@@ -87,9 +88,15 @@ function Profile() {
   );
 }
 
-function Notifications() {
+function WishList() {
   return (
     <AllFavorites />
+  );
+}
+
+function AllOrderItems() {
+  return (
+    <AllOrderItems />
   );
 }
 
@@ -103,6 +110,13 @@ function MyAccount(){
     <Account />
   )
 }
+
+function SPOffers(){
+  return(
+    <SpecialOffers />
+  )
+}
+
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -126,11 +140,11 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Favorite Items"
-        component={Notifications}
+        name="All Order Items"
+        component={AllOrderItems}
         
         options={{
-          tabBarLabel: 'Favorites',
+          tabBarLabel: 'My orders',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="heart" color={color} size={size} />
           ),
@@ -222,9 +236,19 @@ export default function App() {
                     </Circle>
                   )
                 }}/>
-                <Drawer.Screen name="MyCartStack" component={MyCartStack}  options={{
+                <Drawer.Screen name="Wish List" component={WishList}  options={{
                   drawerIcon: ({ focused, color, size }) => (
-                    <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
+                    <Ionicons name={focused ? 'heart' : 'heart-outline'} size={size} color={color} />
+                  ),
+                }}/>
+                <Drawer.Screen name="Cart items" component={MyCartStack}  options={{
+                  drawerIcon: ({ focused, color, size }) => (
+                    <Ionicons name={focused ? 'cart' : 'cart-sharp'} size={size} color={color} />
+                  ),
+                }}/>
+                <Drawer.Screen name="Special Offers" component={SPOffers}  options={{
+                  drawerIcon: ({ focused, color, size }) => (
+                    <Ionicons name={focused ? 'pricetags' : 'pricetags-outline'} size={size} color={color} />
                   ),
                 }}/>
                 <Drawer.Screen name="Account" component={MyAccount} options={{
